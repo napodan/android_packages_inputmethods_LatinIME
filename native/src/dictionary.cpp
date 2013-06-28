@@ -21,7 +21,7 @@
 #include <string.h>
 //#define LOG_TAG "dictionary.cpp"
 //#include <cutils/log.h>
-#define LOGI
+#define ALOGI
 
 #include "dictionary.h"
 #include "basechars.h"
@@ -72,16 +72,16 @@ int Dictionary::getSuggestions(int *codes, int codesSize, unsigned short *outWor
     // Get the word count
     suggWords = 0;
     while (suggWords < mMaxWords && mFrequencies[suggWords] > 0) suggWords++;
-    if (DEBUG_DICT) LOGI("Returning %d words", suggWords);
+    if (DEBUG_DICT) ALOGI("Returning %d words", suggWords);
 
     if (DEBUG_DICT) {
-        LOGI("Next letters: ");
+        ALOGI("Next letters: ");
         for (int k = 0; k < nextLettersSize; k++) {
             if (mNextLettersFrequencies[k] > 0) {
-                LOGI("%c = %d,", k, mNextLettersFrequencies[k]);
+                ALOGI("%c = %d,", k, mNextLettersFrequencies[k]);
             }
         }
-        LOGI("\n");
+        ALOGI("\n");
     }
     return suggWords;
 }
@@ -99,7 +99,7 @@ Dictionary::getVersionNumber()
 {
     mVersion = (mDict[0] & 0xFF);
     mBigram = (mDict[1] & 0xFF);
-    LOGI("IN NATIVE SUGGEST Version: %d Bigram : %d \n", mVersion, mBigram);
+    ALOGI("IN NATIVE SUGGEST Version: %d Bigram : %d \n", mVersion, mBigram);
 }
 
 // Checks whether it has the latest dictionary or the old dictionary
@@ -175,7 +175,7 @@ Dictionary::addWord(unsigned short *word, int length, int frequency)
     if (DEBUG_DICT) {
         char s[length + 1];
         for (int i = 0; i <= length; i++) s[i] = word[i];
-        LOGI("Found word = %s, freq = %d : \n", s, frequency);
+        ALOGI("Found word = %s, freq = %d : \n", s, frequency);
     }
 
     // Find the right insertion point
@@ -201,7 +201,7 @@ Dictionary::addWord(unsigned short *word, int length, int frequency)
             *dest++ = *word++;
         }
         *dest = 0; // NULL terminate
-        if (DEBUG_DICT) LOGI("Added word at %d\n", insertAt);
+        if (DEBUG_DICT) ALOGI("Added word at %d\n", insertAt);
         return true;
     }
     return false;
@@ -214,7 +214,7 @@ Dictionary::addWordBigram(unsigned short *word, int length, int frequency)
     if (DEBUG_DICT) {
         char s[length + 1];
         for (int i = 0; i <= length; i++) s[i] = word[i];
-        LOGI("Bigram: Found word = %s, freq = %d : \n", s, frequency);
+        ALOGI("Bigram: Found word = %s, freq = %d : \n", s, frequency);
     }
 
     // Find the right insertion point
@@ -227,7 +227,7 @@ Dictionary::addWordBigram(unsigned short *word, int length, int frequency)
         }
         insertAt++;
     }
-    LOGI("Bigram: InsertAt -> %d maxBigrams: %d\n", insertAt, mMaxBigrams);
+    ALOGI("Bigram: InsertAt -> %d maxBigrams: %d\n", insertAt, mMaxBigrams);
     if (insertAt < mMaxBigrams) {
         memmove((char*) mBigramFreq + (insertAt + 1) * sizeof(mBigramFreq[0]),
                (char*) mBigramFreq + insertAt * sizeof(mBigramFreq[0]),
@@ -241,7 +241,7 @@ Dictionary::addWordBigram(unsigned short *word, int length, int frequency)
             *dest++ = *word++;
         }
         *dest = 0; // NULL terminate
-        if (DEBUG_DICT) LOGI("Bigram: Added word at %d\n", insertAt);
+        if (DEBUG_DICT) ALOGI("Bigram: Added word at %d\n", insertAt);
         return true;
     }
     return false;
@@ -401,7 +401,7 @@ Dictionary::getBigrams(unsigned short *prevWord, int prevWordLength, int *codes,
 
     if (mBigram == 1 && checkIfDictVersionIsLatest()) {
         int pos = isValidWordRec(DICTIONARY_HEADER_SIZE, prevWord, 0, prevWordLength);
-        LOGI("Pos -> %d\n", pos);
+        ALOGI("Pos -> %d\n", pos);
         if (pos < 0) {
             return 0;
         }
@@ -447,7 +447,7 @@ Dictionary::searchForTerminalNode(int addressLookingFor, int frequency)
         }
         pos = followDownBranchAddress; // pos start at count
         int count = mDict[pos] & 0xFF;
-        LOGI("count - %d\n",count);
+        ALOGI("count - %d\n",count);
         pos++;
         for (int i = 0; i < count; i++) {
             // pos at data
@@ -521,7 +521,7 @@ Dictionary::searchForTerminalNode(int addressLookingFor, int frequency)
         }
         depth++;
         if (followDownBranchAddress == 0) {
-            LOGI("ERROR!!! Cannot find bigram!!");
+            ALOGI("ERROR!!! Cannot find bigram!!");
             break;
         }
     }
