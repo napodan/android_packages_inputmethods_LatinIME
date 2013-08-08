@@ -12,6 +12,4 @@ LOCAL_SDK_VERSION := 8
 
 LOCAL_MODULE := libjni_latinime
 
-LOCAL_MODULE_TAGS := user
-
 include $(BUILD_SHARED_LIBRARY)
