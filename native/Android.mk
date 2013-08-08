@@ -10,6 +10,6 @@ LOCAL_SRC_FILES := \
 
 LOCAL_SDK_VERSION := 8
 
-LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE := libjni_latinime
 
 include $(BUILD_SHARED_LIBRARY)
