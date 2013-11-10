@@ -397,7 +397,6 @@ public class LatinIME extends InputMethodService
               });
         }
         prefs.registerOnSharedPreferenceChangeListener(this);
-        LatinImeLogger.init(this);
     }
 
     /**
@@ -1252,7 +1251,6 @@ public class LatinIME extends InputMethodService
                 } else {
                     handleCharacter(primaryCode, keyCodes);
                 }
-                LatinImeLogger.logOnInputChar(1);
                 // Cancel the just reverted state
                 mJustRevertedSeparator = null;
         }
